@@ -1,4 +1,5 @@
 from tkinter import *
+import funcs
 
 root = Tk()
 width = 700
@@ -12,6 +13,16 @@ y_offset = (screen_height - height) //2
 root.geometry(f"{width}x{height}+{x_offset}+{y_offset}")
 root.title("Викторина")
 root.resizable(False, False)
+
+correct = 0
+wrong = 0
+def update_counter(is_correct):
+    global correct, wrong
+    if is_correct:
+        correct += 1
+    else:
+        wrong += 1
+        
 QUEST = Label(text="", font=("Arial", 16))
 QUEST.place(anchor="center", relx=0.5, rely=0.15)
 
@@ -21,7 +32,10 @@ buttons = []
 
 for i in range(1, 5):
     btn = Button(width=50, height=1, font=("Arial", 14))
+    btn.config(command=lambda b=btn: funcs.choice(b, QUEST, buttons, info))
     btn.place(anchor="center", relx=0.5, rely=0.25+0.15*i)
     buttons.append(btn)
+
+funcs.generate_quest(QUEST, buttons)
 
 root.mainloop()
